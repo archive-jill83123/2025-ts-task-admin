@@ -149,3 +149,8 @@ src/
 ├── components/    # Vue 組件
 └── views/         # 頁面組件
 ```
+
+## 課程 API
+
+- [註冊連結、測試管理平台](https://ec-course-api.hexschool.io/)
+- [API 文件](https://hexschool.github.io/ec-courses-api-swaggerDoc/)

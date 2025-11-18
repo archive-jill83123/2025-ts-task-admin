@@ -25,20 +25,20 @@
 // - imageUrl: 字串型別 (主要圖片網址)
 // - imagesUrl: 字串陣列型別 (其他圖片網址)
 // - num: 數字型別 (數量)
-export interface ProductData {
+export type TProductData = {
   // 在這裡加上型別定義
-  id: unknown
-  title: unknown
-  category: unknown
-  origin_price: unknown
-  price: unknown
-  unit: unknown
-  description: unknown
-  content: unknown
-  is_enabled: unknown
-  imageUrl: unknown
-  imagesUrl: unknown
-  num: unknown
+  id: string
+  title: string
+  category: string
+  origin_price: number
+  price: number
+  unit: string
+  description: string
+  content: string
+  is_enabled: number
+  imageUrl: string
+  imagesUrl: string[]
+  num: number
 }
 
 // TODO: 定義分頁資訊型別
@@ -48,48 +48,25 @@ export interface ProductData {
 // - has_pre: 是否有前一頁 (布林值)
 // - has_next: 是否有下一頁 (布林值)
 // - category: 分類 (字串)
-export interface Pagination {
+export type TPagination = {
   // 在這裡加上型別定義，將 unknown 替換為正確的型別
-  total_pages: unknown
-  current_page: unknown
-  has_pre: unknown
-  has_next: unknown
-  category: unknown
+  total_pages: number
+  current_page: number
+  has_pre: boolean
+  has_next: boolean
+  category: string
 }
 
 // TODO: 定義建立商品參數型別
 // 提示：建立商品時不需要 id 和 num 欄位
-export interface CreateProductParams {
-  // 在這裡加上型別定義，將 unknown 替換為正確的型別
-  title: unknown
-  category: unknown
-  origin_price: unknown
-  price: unknown
-  unit: unknown
-  description: unknown
-  content: unknown
-  is_enabled: unknown
-  imageUrl: unknown
-  imagesUrl: unknown
-}
+export type TCreateProductParams = Omit<TProductData, 'id'>
 
 // TODO: 定義編輯商品參數型別
 // 提示：編輯商品需要 id 和 data 物件
-export interface EditProductParams {
+export type TEditProductParams = {
   // 在這裡加上型別定義，將 unknown 替換為正確的型別
-  id: unknown
-  data: {
-    title: unknown
-    category: unknown
-    origin_price: unknown
-    price: unknown
-    unit: unknown
-    description: unknown
-    content: unknown
-    is_enabled: unknown
-    imageUrl: unknown
-    imagesUrl: unknown
-  }
+  id: TProductData['id']
+  data: Omit<TProductData, 'id'>
 }
 
 // TODO: 定義取得商品列表回應型別
@@ -98,32 +75,32 @@ export interface EditProductParams {
 // - products: 商品陣列 (ProductData[])
 // - pagination: 分頁資訊 (Pagination)
 // - messages: 訊息陣列 (未知型別陣列)
-export interface GetProductsResponse {
+export type TGetProductsResponse = {
   // 在這裡加上型別定義，將 unknown 替換為正確的型別
-  success: unknown
-  products: unknown
-  pagination: unknown
-  messages: unknown
+  success: boolean
+  products: TProductData[]
+  pagination: TPagination
+  messages: unknown[]
 }
 
 // TODO: 定義訊息回應基本型別
 // 提示：包含 success (布林值) 和 message (字串)
-interface MessageResponse {
+type TMessageResponse = {
   // 在這裡加上型別定義，將 unknown 替換為正確的型別
-  success: unknown
-  message: unknown
+  success: boolean
+  message: string
 }
 
 // TODO: 使用 MessageResponse 定義以下型別
 // 提示：這些型別都是 MessageResponse 的別名
-export type CreateProductResponse = MessageResponse
-export type EditProductResponse = MessageResponse
-export type DeleteProductResponse = MessageResponse
+export type TCreateProductResponse = TMessageResponse
+export type TEditProductResponse = TMessageResponse
+export type TDeleteProductResponse = TMessageResponse
 
 // TODO: 定義圖片上傳回應型別
 // 提示：包含 success (布林值) 和 imageUrl (字串)
-export interface UploadImageResponse {
+export type TUploadImageResponse = {
   // 在這裡加上型別定義，將 unknown 替換為正確的型別
-  success: unknown
-  imageUrl: unknown
+  success: boolean
+  imageUrl: string
 }

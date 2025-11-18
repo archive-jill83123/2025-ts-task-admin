@@ -1,7 +1,7 @@
 import { apiUploadImage } from '@/api/products'
 import { ref, type Ref } from 'vue'
 
-interface UseImageUploadResult {
+interface IUseImageUploadResult {
   uploadedImages: Ref<string[]>
   imageUrlInput: Ref<string>
   fileNameDisplay: Ref<string>
@@ -20,7 +20,7 @@ function isValidUrl(url: string): boolean {
   try {
     const parsedUrl = new URL(url)
     return ['http:', 'https:'].includes(parsedUrl.protocol)
-  } catch (e) {
+  } catch {
     return false
   }
 }
@@ -31,7 +31,6 @@ async function uploadFile(file: File): Promise<string> {
 
   try {
     const res = await apiUploadImage(formData)
-
     return res.data.imageUrl
   } catch (error) {
     alert('上傳圖片失敗')
@@ -39,14 +38,14 @@ async function uploadFile(file: File): Promise<string> {
   }
 }
 
-export function useImageUpload(initialImages: string[] = []): UseImageUploadResult {
+export function useImageUpload(initialImages: string[] = []): IUseImageUploadResult {
   const uploadedImages: Ref<string[]> = ref([...initialImages])
   const imageUrlInput: Ref<string> = ref('')
   const fileNameDisplay: Ref<string> = ref('未選擇檔案。')
   const fileToUpload: Ref<File | null> = ref(null)
   const isUploading: Ref<boolean> = ref(false)
 
-  const resetImages = (newImages: string[] = []): void => {
+  const resetImages = (newImages: string[] = []) => {
     uploadedImages.value = [...newImages].filter(Boolean)
     imageUrlInput.value = ''
     fileNameDisplay.value = '未選擇檔案。'
@@ -54,7 +53,7 @@ export function useImageUpload(initialImages: string[] = []): UseImageUploadResu
     isUploading.value = false
   }
 
-  const addImageUrl = (): void => {
+  const addImageUrl = () => {
     const url = imageUrlInput.value.trim()
     if (!url) return
 
@@ -75,7 +74,7 @@ export function useImageUpload(initialImages: string[] = []): UseImageUploadResu
   /**
    * 處理檔案輸入：僅儲存檔案實例並顯示名稱，不立即上傳。
    */
-  const handleFileChange = (event: Event): void => {
+  const handleFileChange = (event: Event) => {
     const input = event.target as HTMLInputElement
     const file = input.files?.[0]
 
@@ -105,7 +104,7 @@ export function useImageUpload(initialImages: string[] = []): UseImageUploadResu
     fileNameDisplay.value = file.name
   }
 
-  const triggerUpload = async (): Promise<void> => {
+  const triggerUpload = async () => {
     const file = fileToUpload.value
 
     if (!file) {
@@ -121,7 +120,6 @@ export function useImageUpload(initialImages: string[] = []): UseImageUploadResu
       isUploading.value = true
 
       const imageUrl = await uploadFile(file)
-
       uploadedImages.value.push(imageUrl)
 
       fileToUpload.value = null
@@ -136,7 +134,7 @@ export function useImageUpload(initialImages: string[] = []): UseImageUploadResu
     }
   }
 
-  const deleteImage = (index: number): void => {
+  const deleteImage = (index: number) => {
     uploadedImages.value.splice(index, 1)
   }
 
